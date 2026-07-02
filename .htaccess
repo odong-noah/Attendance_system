@@ -1,0 +1,37 @@
+# ============================================================
+# .htaccess — Security & Configuration
+# IT Department Attendance Management System
+# ============================================================
+
+# Disable directory listing
+Options -Indexes
+
+# Protect sensitive files
+<FilesMatch "\.(sql|md|env|log|ini)$">
+    Require all denied
+</FilesMatch>
+
+# Protect includes directory from direct access
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^includes/ - [F,L]
+    RewriteRule ^vendor/ - [F,L]
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "DENY"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# PHP error display off in production
+php_flag display_errors off
+php_value error_reporting 0
+
+# Default character set
+AddDefaultCharset UTF-8
+
+# Default index
+DirectoryIndex index.php
