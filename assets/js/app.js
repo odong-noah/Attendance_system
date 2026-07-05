@@ -170,10 +170,19 @@ document.addEventListener('click', function (e) {
 
 // ── Sidebar mobile toggle ─────────────────────────────────────
 (function () {
-  var btn = document.getElementById('sidebarToggle');
-  if (btn) btn.addEventListener('click', function () {
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('#sidebarToggle');
     var sb = document.querySelector('.sidebar');
-    if (sb) sb.classList.toggle('open');
+    
+    if (btn) {
+      // Toggle the sidebar
+      if (sb) sb.classList.toggle('open');
+    } else if (sb && sb.classList.contains('open')) {
+      // Close sidebar if clicking outside of it on mobile
+      if (!sb.contains(e.target)) {
+        sb.classList.remove('open');
+      }
+    }
   });
 })();
 
